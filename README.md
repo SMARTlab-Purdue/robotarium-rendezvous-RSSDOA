@@ -1,6 +1,6 @@
 # robotarium-rendezvous-RSSDOA
 
-This repository contains the Matlab source codes (to use in Robotarium platform) of various rendezvous controllers for consensus control in a multi-agent / multi-robot system. We also proposed a new weighted bearing controller using wireless network measuremnts such as the Received Signal Strength (RSS) and the Direction of Arrival (DOA). 
+This repository contains the Matlab source codes (to use in Robotarium platform) of various rendezvous controllers for consensus control in a multi-agent / multi-robot system. We also proposed a new weighted bearing controller using wireless network measurements such as the Received Signal Strength (RSS) and the Direction of Arrival (DOA). 
 
 Robotarium is a remotely accessible multi-robot experiment testbed provided by the Georgia Tech. https://www.robotarium.gatech.edu/
 
