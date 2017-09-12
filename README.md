@@ -19,8 +19,8 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 We have provided some utility functions to use it in the experiments. They are as follows.
 1. GetConnectedGraph: This functions provides a connected graph given the coordinates of the agents and a common sensing range.
 2. initialize_robot_positions: This function repositions the randomly positioned robots in the Robotarium simulator to a defined initial positions. 
-## Third party utility functions
-2. minboundsemicircle: This function provides a smallest circle given a set of points. It is available in Mathworks File Exchange provided by John D'Errico as "A suite of minimal bounding objects" (v1.2). 
+### Third party utility functions
+3. minboundsemicircle: This function provides a smallest circle given a set of points. It is available in Mathworks File Exchange provided by John D'Errico as "A suite of minimal bounding objects" (v1.2). 
 https://www.mathworks.com/matlabcentral/fileexchange/34767-a-suite-of-minimal-bounding-objects?focused=3820668&tab=function
 
 # Contact
