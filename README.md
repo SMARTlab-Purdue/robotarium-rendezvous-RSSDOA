@@ -6,8 +6,7 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 
 # Installation instructions
 1. Install the Robotarium simulator available from this repository: https://github.com/robotarium/robotarium-matlab-simulator
-2. Download the current repository anywhere on your computer using git clone "repositor_address"
-
+2. Download the current repository anywhere on your computer using the command "git clone https://github.com/SMARTlab-Purdue/robotarium-rendezvous-RSSDOA.git"
 # Usage instructions
 1. First navigate to the Robotarium folder where your downloaded the Robotarium source codes. And Run the "init.m" file to initialize the Matlab workspace and include necessary paths.
 2. Navigate to the current repository (robotarium-rendezvous-RSSDOA) folder
