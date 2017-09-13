@@ -11,7 +11,7 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 # Usage instructions
 1. First navigate to the Robotarium folder where your downloaded the Robotarium source codes. And Run the "init.m" file to initialize the Matlab workspace and include necessary paths.
 2. Navigate to the current repository (robotarium-rendezvous-RSSDOA) folder
-3. Add the 'algorithms' and 'includes' directories into your Matlab path.
+3. Add/Include the 'algorithms' and 'includes' directories into your Matlab path.
 4. Use the rendezvous_experiments_Robotarium_main.m file and choose your desired rendezvous algorithm (8 options currently available) along with experiment parameters and run this main file.
 5. Choose respective consensus control functions file to change/modify/update the algorithm.
 
