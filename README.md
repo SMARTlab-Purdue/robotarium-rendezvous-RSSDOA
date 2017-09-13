@@ -13,14 +13,14 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 2. Navigate to the current repository (robotarium-rendezvous-RSSDOA) folder
 3. Add/Include the 'algorithms' and 'includes' directories into your Matlab path.
 4. Use the rendezvous_experiments_Robotarium_main.m file and choose your desired rendezvous algorithm (8 options currently available) along with experiment parameters and run this main file.
-5. Choose respective consensus control functions file to change/modify/update the algorithm.
+5. Choose respective consensus control functions file in the "algorithms" folder to change/modify/update the algorithm.
 
 # Included utility functions
-We have provided some utility functions to use it in the experiments. They are as follows.
+We have provided the following utility functions to use it in the experiments. They can also be used as a standalone function.
 1. GetConnectedGraph: This functions provides a connected graph given the coordinates of the agents and a common sensing range.
-2. initialize_robot_positions: This function repositions the randomly positioned robots in the Robotarium simulator to a defined initial positions. 
+2. initialize_robot_positions: This function repositions the randomly positioned robots in the Robotarium simulator to the initial positions supplied as input to the function.
 ### Third party utility functions
-3. minboundsemicircle: This function provides a smallest circle given a set of points. It is available in Mathworks File Exchange provided by John D'Errico as "A suite of minimal bounding objects" (v1.2). 
+3. minboundsemicircle: This is a third-party function available in Mathworks File Exchange provided by John D'Errico as "A suite of minimal bounding objects" (v1.2). It provides a smallest enclosing circle given a set of points. 
 https://www.mathworks.com/matlabcentral/fileexchange/34767-a-suite-of-minimal-bounding-objects?focused=3820668&tab=function
 
 # Contact
