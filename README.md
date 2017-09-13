@@ -24,4 +24,4 @@ We have provided the following utility functions to use it in the experiments. T
 https://www.mathworks.com/matlabcentral/fileexchange/34767-a-suite-of-minimal-bounding-objects?focused=3820668&tab=function
 
 # Contact
-For any queries, issues, and questions with the code, please contact Ramviyas Parasuraman (ramviyas@purdue.edu).
+For any queries, issues, and questions with the code, please contact the developers Dr.Ramviyas Parasuraman (ramviyas@purdue.edu) and Prof.Byung-Cheol Min (minb@purdue.edu).
