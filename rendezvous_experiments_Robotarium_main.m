@@ -26,11 +26,12 @@ error_bearing = 0.0; % Standard deviations of the bearing measurment error (radi
 error_distance = 0.05; % Standard deviations of the distance measurment error (m)
 
 %% Flags to use specific parts of the code
-collision_avoidance = 0;
-normalize_velocities = 1; 
-update_network_topology = 1;
-plot_initial_graph = 0;
-plot_dynamic_graph = 0;
+collision_avoidance = 0; % To enable/disable barrier certificates
+normalize_velocities = 1; % To normalize the velocities (recommended)
+update_network_topology = 1; % To enable/disable the update of connected graph (dynamically) in every iteration
+plot_initial_graph = 0; % To plot initial connected graph
+plot_dynamic_graph = 0; % To plot updated connected graph in every iteration
+plot_robot_index = 1; % To enable/disable the display of robot index on top of each robot
 
 %% Grab tools we need to convert from single-integrator to unicycle dynamics
 %Gains for the transformation from single-integrator to unicycle dynamics
@@ -94,11 +95,13 @@ for t = 1:max_iterations
     xi = uni_to_si_states(x); % convert the unicycle pose to SI units (x,y)
     
     % Display the robot's index on top of each robot in the Robotarium
-    fig = set(0,'CurrentFigure',r.figure_handle);
-    for i=1:N
-        fig(i) = text(x(1,i),x(2,i)+0.05,num2str(i),'FontSize',12,'Color','red','FontWeight','Bold');
+    if(plot_robot_index == 1)  
+        fig = set(0,'CurrentFigure',r.figure_handle);
+        for i=1:N
+            fig(i) = text(x(1,i),x(2,i)+0.05,num2str(i),'FontSize',12,'Color','red','FontWeight','Bold');
+        end
     end
-
+    
     % Update the connected tree dynamically
     if (update_network_topology == 1)
         [L,G] = GetConnectedGraph(x(1:2,:),sensing_range); % Finding the initial connected Graph
@@ -167,7 +170,9 @@ for t = 1:max_iterations
         iteration_at_minenergy = t;
     end
     
-    delete(fig); % delete the text objects (robot indices) on the Robotarium figure
+    if(plot_robot_index == 1)  
+        delete(fig); % delete the text objects (robot indices) on the Robotarium figure
+    end
     
 end
 
