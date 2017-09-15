@@ -38,7 +38,7 @@ for i = 1:N
     %w_ij = 0.001* 10.^(-RSS_ij/10); % RSS measurement converted from dBm to mW (absolute power)
     w_ij = 0.001 *10.^(RSS_ij/10); % RSS measurement converted from dBm to mW (absolute power)
     w_ij = w_ij./sum(w_ij); % Normalize the weight vector for a given robot
-    
+  
     if(~isempty(neighbors))
         dxi(1,i) = vmax*sum(xvel./w_ij) / length(neighbors);
         dxi(2,i) = vmax*sum(yvel./w_ij) / length(neighbors);

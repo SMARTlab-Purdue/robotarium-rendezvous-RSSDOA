@@ -4,8 +4,15 @@ close all;
 
 global sensing_range error_bearing error_distance uni_to_si_states si_to_uni_dyn si_pos_controller G N desired_distance;
 
-%% Choose your Rendezvous algorithm - For options see the code block between lines 108 and 120
-algorithm = 'consensus_control_using_RSS_and_DOA';
+%% Choose your Rendezvous algorithm
+algorithm = 'consensus_control_using_RSS_and_DOA'
+%algorithm = 'coordinates_based_rendezvous' % This is the baseline algorithm
+%algorithm = 'coordinates_based_rendezvous_with_max_velocity';
+%algorithm = 'bearing_only_rendezvous_using_all_bearings';
+%algorithm = 'bearing_only_rendezvous_using_min_and_max_bearings';
+%algorithm = 'bearing_only_rendezvous_using_average_bearing';
+%algorithm = 'bearing_only_rendezvous_using_enclosing_circles';
+%algorithm = 'bearing_and_range_based_rendezvous_using_weighted_bearings';
 fH = str2func(algorithm); % function handle for the chosen rendezvous algorithm
 
 %% Get Robotarium object used to communicate with the robots/simulator
@@ -13,7 +20,7 @@ rb = RobotariumBuilder();
 N=15; % Number of agents/robots
 % Build the Robotarium simulator object!
 r = rb.set_number_of_agents(N).set_save_data(false).build();
-figure(1); movegui('northeast'); movegui('onscreen');
+figure_robotarium = figure(1); movegui('northeast'); movegui('onscreen');
 %title('Rendezvous algorithm experimented in Robotarium testbed');
 
 %% Experiment parameters
@@ -22,8 +29,8 @@ desired_energy = 0.2; % desired value of the Lyapunov candidate energy function
 sensing_range = 0.8; % Sensing radius within which robot i detects robot j (same for all the robots)
 safety_radius = 0.04; % safety radius for collision avoidance between robots
 dxmax = 1; % if normalize_velocities is used
-error_bearing = 0.0; % Standard deviations of the bearing measurment error (radians)
-error_distance = 0.05; % Standard deviations of the distance measurment error (m)
+error_bearing = 0.35; % Standard deviations of the bearing measurment error (radians)
+error_distance = 0.0; % Standard deviations of the distance measurment error (m)
 
 %% Flags to use specific parts of the code
 collision_avoidance = 0; % To enable/disable barrier certificates
@@ -31,7 +38,9 @@ normalize_velocities = 1; % To normalize the velocities (recommended)
 update_network_topology = 1; % To enable/disable the update of connected graph (dynamically) in every iteration
 plot_initial_graph = 0; % To plot initial connected graph
 plot_dynamic_graph = 0; % To plot updated connected graph in every iteration
-plot_robot_index = 1; % To enable/disable the display of robot index on top of each robot
+plot_robot_index = 0; % To enable/disable the display of robot index on top of each robot in the Robotarium figure
+plot_robot_trajectory = 1; % To enable/disable the display of robot trajectory in the Robotarium figure
+plot_robot_initialposition = 1; % To enable/disable the display of robot initial position in the Robotarium figure
 
 %% Grab tools we need to convert from single-integrator to unicycle dynamics
 %Gains for the transformation from single-integrator to unicycle dynamics
@@ -49,7 +58,7 @@ si_pos_controller = create_si_position_controller('XVelocityGain', 2, 'YVelocity
 si_barrier_cert = create_si_barrier_certificate('SafetyRadius', safety_radius);
 
 %% Initialize the robots to a fixed position
-initial_positions = [0 0.4 0.5 0.4 -0.1 -0.3 -0.5 -0.7 0 1 -1 -1 0.3 -0.5 0.9; 0.3 0.9 1.1 -1 -0.2 -0.9 -0.3 -1 1.2 -1.2 0.2 -0.9 -0.4 0.6 1];
+%initial_positions = [0 0.4 0.5 0.4 -0.1 -0.3 -0.5 -0.7 0 1 -1 -1 0.3 -0.5 0.9; 0.3 0.9 1.1 -1 -0.2 -0.9 -0.3 -1 1.2 -1.2 0.2 -0.9 -0.4 0.6 1];
 %initial_positions = r.poses(1:2,:) *2; % For random initial positions
 r = initialize_robot_positions(r,initial_positions);
 
@@ -61,9 +70,8 @@ r.step();
 [L,G] = GetConnectedGraph(x(1:2,:),sensing_range); % Finding the initial connected Graph
 
 %% Initiating connected graph figure window
-
 if(plot_initial_graph == 1)
-    figure(2); plot(G); title('Initial Network Topology');
+    figure_graph = figure(2); plot(G); title('Initial Network Topology');
     movegui('northwest');
 end
 
@@ -78,10 +86,17 @@ previous_xi = xi; % A temporary variable to store the position values
 distance_travelled = zeros(1,N); % total distance traveled by each robot - Performance evaluation metric
 iteration_at_stopcondition = 0; % number of iteration at which the stop condition is reached
 iteration_at_minenergy = 0; % number of iteration at which the energy function values is the minimum (less than a threshold)
-
 energy = zeros(1,max_iterations); % The value of the Energy function which is sum of all distances between the connected nodes
+mycols = jet(N); % To display colored trajectory for each robot (if plot_robot_trajectory is set)
 
-
+% Display the robot's initial position trajectory in the Robotarium figure
+if(plot_robot_initialposition == 1)  
+    fig2 = set(0,'CurrentFigure',r.figure_handle);
+    for i=1:N
+        fig2(i) = plot(x(1,i),x(2,i),'o','Color',mycols(i,:));
+    end
+end
+    
 disp('Rendezvous process initiated - displaying the number of iterations');
 
 %Iteration starts here (for the previously specified number of iterations)
@@ -95,10 +110,19 @@ for t = 1:max_iterations
     xi = uni_to_si_states(x); % convert the unicycle pose to SI units (x,y)
     
     % Display the robot's index on top of each robot in the Robotarium
+    % figure
     if(plot_robot_index == 1)  
-        fig = set(0,'CurrentFigure',r.figure_handle);
+        fig1 = set(0,'CurrentFigure',r.figure_handle);
         for i=1:N
-            fig(i) = text(x(1,i),x(2,i)+0.05,num2str(i),'FontSize',12,'Color','red','FontWeight','Bold');
+            fig1(i) = text(x(1,i),x(2,i)+0.05,num2str(i),'FontSize',12,'Color','red','FontWeight','Bold');
+        end
+    end
+
+    % Display the robot's trajectory in the Robotarium figure
+    if(plot_robot_trajectory == 1)  
+        fig2 = set(0,'CurrentFigure',r.figure_handle);
+        for i=1:N
+            fig2(i) = plot(x(1,i),x(2,i),'.--','Color',mycols(i,:));
         end
     end
     
@@ -171,13 +195,12 @@ for t = 1:max_iterations
     end
     
     if(plot_robot_index == 1)  
-        delete(fig); % delete the text objects (robot indices) on the Robotarium figure
+        delete(fig1); % delete the text objects (robot indices) on the Robotarium figure
     end
-    
 end
 
 % Though we didn't save any data, we still should call r.call_at_scripts_end() after our
 % experiment is over!
 r.call_at_scripts_end();
 
-%save('rssdoa_eb0p35_ed0p05_dd0p1_de0p2.mat','distance_travelled','energy','iteration_at_stopcondition','iteration_at_minenergy');
+%print(figure_robotarium,'RobotariumFigure','-depsc');
