@@ -1,9 +1,13 @@
 function [dxi,stop_condition,energy] = weighted_bearing_consensus_using_Range_and_Bearings(L,xi)
 % This function implements the Weighted Bearings Consensus Controller 
 % using Bearings and Range information measured using any sensors as the (noisy) control inputs.
+% The weight function is inspired by the following reference (Equation 24):
+% Zavlanos, Michael M., Magnus B. Egerstedt, and George J. Pappas,
+% "Graph-theoretic connectivity control of mobile robot networks.",
+% Proceedings of the IEEE 99.9 (2011): 1525-1540.
 % Author: Ramviyas Parasuraman. ramviyas@purdue.edu
 
-global N desired_distance error_bearing error_distance;
+global N desired_distance error_bearing error_distance sensing_range;
 
 dxi = zeros(2, N);
 stop_condition = 1;

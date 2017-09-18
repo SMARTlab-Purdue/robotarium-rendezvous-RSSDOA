@@ -1,10 +1,17 @@
 function [dxi,stop_condition,energy] = bearing_only_rendezvous_using_enclosing_circles(L,xi)
+% This function implements a Bearings-only controller using the smallest enclosing circles 
+% of pseudo-positions of the neighbors based on bearing measurements 
+% The algorithm is based on the following reference:
+% Kriegleder, M., Digumarti, S. T., Oung, R., & D'Andrea, R. (2015, May),
+% "Rendezvous with bearing-only information and limited sensing range",
+% In 2015 IEEE International Conference on Robotics and Automation (ICRA), (pp. 5941-5947). IEEE.
+% Author of this code: Ramviyas Parasuraman. ramviyas@purdue.edu
 
 global N sensing_range desired_distance error_bearing ;
 
 dxi = zeros(2, N);
 stop_condition = 1;
-energy = 0;
+energy = 0; % Lyapunov candidate function
 vmax=2;
 
 for i = 1:N
@@ -14,7 +21,8 @@ for i = 1:N
     k=1;
     % Iterate through agent i's neighbors
     for j = neighbors
-        alpha_ij = atan2(xi(2,j)-xi(2,i),xi(1,j)-xi(1,i)) + error_bearing*randn;
+        alpha_ij = atan2(xi(2,j)-xi(2,i),xi(1,j)-xi(1,i)) + error_bearing*randn; % adding noise to the bearing measurements
+        %calculationg pseudo-positions of the neighbors using the sensing_range as the distance between i and j
         xpos_j(k) = sensing_range*cos(alpha_ij); % assumed x position of robot j with respect to robot i
         ypos_j(k) = sensing_range*sin(alpha_ij); % assumed y position of robot j with respect to robot i
         k = k + 1;
@@ -25,12 +33,15 @@ for i = 1:N
             stop_condition = 0;
         end
     end
-    semicircle = minboundsemicircle(xpos_j,ypos_j); % Calcute the smallest circle that encapsulates all points using the code from "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
-    center = semicircle.center'; % direction to the target point
-    center_norm = norm(center - xi(:,i));  % distance of the center from robot i
-    weight = min(sensing_range/2,center_norm); % distance to the target point
     
     if(~isempty(neighbors))
+        % calculating the smallest circle contaning all neighbors
+        semicircle = minboundsemicircle(xpos_j,ypos_j); % Calcute the smallest circle that encapsulates all points using the code from "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
+        center = semicircle.center'; % direction to the target point
+        center_norm = norm(center - xi(:,i));  % distance of the center from robot i
+        weight = min(sensing_range/2,center_norm); % distance to the target point
+
+        % For each robot, calculate velocities based on enclosing circles of pseudo-positions    if(~isempty(neighbors))
         dxi(:,i) = vmax * weight * center / center_norm; % compute velocity to the target point
     end
 end

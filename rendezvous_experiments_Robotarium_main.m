@@ -18,8 +18,10 @@ algorithm = 'weighted_bearing_consensus_using_RSS_and_DOA'; % It uses the DOA of
 %algorithm = 'bearing_only_rendezvous_using_enclosing_circles';
 
 % Other possible consensus controllers 
-%algorithm = 'coordinates_based_rendezvous_with_max_velocity';
 %algorithm = 'bearing_only_rendezvous_using_average_bearing';
+%algorithm = 'coordinates_based_rendezvous_with_mean_velocity';
+%algorithm = 'coordinates_based_rendezvous_with_max_velocity';
+%algorithm = 'coordinates_based_rendezvous_with_min_velocity';
 
 fH = str2func(algorithm); % function handle for the chosen rendezvous algorithm
 
@@ -35,8 +37,8 @@ figure_robotarium = figure(1); movegui('northeast'); movegui('onscreen');
 desired_distance = 0.1; % desired inter-agent distance range to realize stop condition
 desired_energy = 0.2; % desired value of the Lyapunov candidate energy function (not used)
 sensing_range = 0.8; % Sensing radius within which robot i detects robot j (same for all the robots)
-error_bearing = 1.0; % Standard deviations of the bearing measurment error (radians)
-error_distance = 0.3; % Standard deviations of the distance measurment error (m)
+error_bearing = 0.0; % Standard deviations of the bearing measurment error (radians)
+error_distance = 0.0; % Standard deviations of the distance measurment error (m)
 safety_radius = 0.04; % safety radius for collision avoidance between robots
 dxmax = 1; % if normalize_velocities is used
 
@@ -44,11 +46,11 @@ dxmax = 1; % if normalize_velocities is used
 collision_avoidance = 0; % To enable/disable barrier certificates
 normalize_velocities = 1; % To normalize the velocities (recommended)
 update_network_topology = 1; % To enable/disable the update of connected graph (dynamically) in every iteration
-plot_initial_graph = 0; % To plot initial connected graph
-plot_dynamic_graph = 0; % To plot updated connected graph in every iteration
-plot_robot_index = 0; % To enable/disable the display of robot index on top of each robot in the Robotarium figure
-plot_robot_trajectory = 0; % To enable/disable the display of robot trajectory in the Robotarium figure
-plot_robot_initialposition = 0; % To enable/disable the display of robot initial position in the Robotarium figure
+plot_initial_graph = 1; % To plot initial connected graph
+plot_dynamic_graph = 1; % To plot updated connected graph in every iteration
+plot_robot_index = 1; % To enable/disable the display of robot index on top of each robot in the Robotarium figure
+plot_robot_trajectory = 1; % To enable/disable the display of robot trajectory in the Robotarium figure
+plot_robot_initialposition = 1; % To enable/disable the display of robot initial position in the Robotarium figure
 
 %% Grab tools we need to convert from single-integrator to unicycle dynamics
 %Gains for the transformation from single-integrator to unicycle dynamics
@@ -80,6 +82,8 @@ r.step();
 %% Initiating connected graph figure window
 if(plot_initial_graph == 1)
     figure_graph = figure(2); plot(G); title('Initial Network Topology');
+    xlim([-3 3]);
+    ylim([-3 3]);
     movegui('northwest');
 end
 
@@ -96,10 +100,8 @@ iteration_at_stopcondition = 0; % number of iteration at which the stop conditio
 iteration_at_minenergy = 0; % number of iteration at which the energy function values is the minimum (less than a threshold)
 energy = zeros(1,max_iterations); % The value of the Energy function which is sum of all distances between the connected nodes
 mycols = jet(N); % To display colored trajectory for each robot (if plot_robot_trajectory is set)
-fig_iter = set(0,'CurrentFigure',r.figure_handle);
-fig_index = set(0,'CurrentFigure',r.figure_handle);
-fig_traj = set(0,'CurrentFigure',r.figure_handle);
-
+fig_index = figure_robotarium;
+fig_traj = figure_robotarium;
 
 % Display the robot's initial position trajectory in the Robotarium figure
 if(plot_robot_initialposition == 1)  
@@ -112,16 +114,18 @@ end
 disp('Rendezvous process initiated - displaying the number of iterations');
 
 % Display the title text
+set(0,'CurrentFigure',r.figure_handle);
 alg_string = regexprep(algorithm,'_',' ');
 alg_string = regexprep(alg_string,'\s*.','${upper($0)}');
-fig_title = text(-1.4,1.4,alg_string,'FontSize',10,'Color','red','FontWeight','Bold', 'Interpreter', 'none');
+text(-1.4,1.4,alg_string,'FontSize',8,'Color','red','FontWeight','Bold', 'Interpreter', 'none');
 
     
 %Iteration starts here (for the previously specified number of iterations)
 for t = 1:max_iterations
     disp(t) % to display the iteration number
     %stop_condition = 1; % This variable is to define the stop condition. If it's 1 - then stop the iteration/experiment 
-    
+
+    set(0,'CurrentFigure',r.figure_handle);
     fig_iter = text(-1.4,-1.4,strcat('Iteration :',' ',num2str(t)),'FontSize',10,'Color','red','FontWeight','Bold');
 
     % Retrieve the most recent poses from the Robotarium.  The time delay is
@@ -133,6 +137,7 @@ for t = 1:max_iterations
     % figure
     if(plot_robot_index == 1)  
         for i=1:N
+            set(0,'CurrentFigure',r.figure_handle);
             fig_index(i) = text(x(1,i),x(2,i)+0.04,num2str(i),'FontSize',10,'Color','red','FontWeight','Bold');
         end
     end
@@ -140,6 +145,7 @@ for t = 1:max_iterations
     % Display the robot's trajectory in the Robotarium figure
     if(plot_robot_trajectory == 1)  
         for i=1:N
+            set(0,'CurrentFigure',r.figure_handle);
             fig_traj(i) = plot(x(1,i),x(2,i),'.--','Color',mycols(i,:));
         end
     end
@@ -154,7 +160,10 @@ for t = 1:max_iterations
     
     %% Plotting the connected graph
     if(plot_dynamic_graph == 1)
-        figure(2); plot(G); title('Dynamic Network Topology'); 
+        set(0,'CurrentFigure',figure_graph);   
+        plot(G); title('Dynamic Network Topology'); 
+        xlim([-3 3]);
+        ylim([-3 3]);
     end
         
     %% Normalizing the velocity limits
