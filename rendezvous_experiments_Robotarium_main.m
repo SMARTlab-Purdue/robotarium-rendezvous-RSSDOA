@@ -7,12 +7,12 @@ global sensing_range error_bearing error_distance uni_to_si_states si_to_uni_dyn
 %% Choose your Rendezvous algorithm
 % Newly Proposed Weighted Bearing Controllers
 algorithm = 'weighted_bearing_consensus_using_RSS_and_DOA'; % It uses the DOA of RSS and the RSS form wireless nework measurements as control inputs
-%algorithm = 'weighted_bearing_consensus_using_Range_and_Bearings'; %It uses range and bearing measurements from any sensors as control inputs
+%algorithm = 'weighted_bearing_consensus_using_Range_and_Bearings'; % It uses both range and bearing measurements from any sensors as control inputs
 
-% Baseline Algorithm - It relies on sharing the coordinates of neighbor robots
-%algorithm = 'coordinates_based_rendezvous' ;
+% Baseline Algorithm - Coordinates based consensus(Rendezvous) algorithms
+%algorithm = 'coordinates_based_rendezvous' ; % It relies on the full coordinates (relative positions) of neighbor robots
 
-% State of the Art (SOTA) Consensus Controllers
+% State of the Art (SOTA) Bearing-only consensus(Rendezvous) algorithms
 %algorithm = 'bearing_only_rendezvous_using_all_bearings';
 %algorithm = 'bearing_only_rendezvous_using_min_and_max_bearings';
 %algorithm = 'bearing_only_rendezvous_using_enclosing_circles';
@@ -33,12 +33,12 @@ figure_robotarium = figure(1); movegui('northeast'); movegui('onscreen');
 
 %% Experiment parameters
 desired_distance = 0.1; % desired inter-agent distance range to realize stop condition
-desired_energy = 0.2; % desired value of the Lyapunov candidate energy function 
+desired_energy = 0.2; % desired value of the Lyapunov candidate energy function (not used)
 sensing_range = 0.8; % Sensing radius within which robot i detects robot j (same for all the robots)
-safety_radius = 0.04; % safety radius for collision avoidance between robots
-dxmax = 1; % if normalize_velocities is used
 error_bearing = 1.0; % Standard deviations of the bearing measurment error (radians)
 error_distance = 0.3; % Standard deviations of the distance measurment error (m)
+safety_radius = 0.04; % safety radius for collision avoidance between robots
+dxmax = 1; % if normalize_velocities is used
 
 %% Flags to use specific parts of the code
 collision_avoidance = 0; % To enable/disable barrier certificates
@@ -65,7 +65,7 @@ si_pos_controller = create_si_position_controller('XVelocityGain', 2, 'YVelocity
 % Collision avoidance - barrier certificates
 si_barrier_cert = create_si_barrier_certificate('SafetyRadius', safety_radius);
 
-%% Initialize the robots to a fixed position
+%% Initialize the robots to fixed positions
 initial_positions = [0 0.4 0.5 0.4 -0.1 -0.3 -0.5 -0.7 0 1 -1 -1 0.3 -0.5 0.9; 0.3 0.9 1.1 -1 -0.2 -0.9 -0.3 -1 1.2 -1.2 0.2 -0.9 -0.4 0.6 1];
 %initial_positions = r.poses(1:2,:) *2; % For random initial positions
 r = initialize_robot_positions(r,initial_positions);
@@ -96,22 +96,34 @@ iteration_at_stopcondition = 0; % number of iteration at which the stop conditio
 iteration_at_minenergy = 0; % number of iteration at which the energy function values is the minimum (less than a threshold)
 energy = zeros(1,max_iterations); % The value of the Energy function which is sum of all distances between the connected nodes
 mycols = jet(N); % To display colored trajectory for each robot (if plot_robot_trajectory is set)
+fig_iter = set(0,'CurrentFigure',r.figure_handle);
+fig_index = set(0,'CurrentFigure',r.figure_handle);
+fig_traj = set(0,'CurrentFigure',r.figure_handle);
+
 
 % Display the robot's initial position trajectory in the Robotarium figure
 if(plot_robot_initialposition == 1)  
-    fig2 = set(0,'CurrentFigure',r.figure_handle);
+    %fig_traj = set(0,'CurrentFigure',r.figure_handle);
     for i=1:N
-        fig2(i) = plot(x(1,i),x(2,i),'o','Color',mycols(i,:));
+        fig_traj = plot(x(1,i),x(2,i),'o','Color',mycols(i,:));
     end
 end
     
 disp('Rendezvous process initiated - displaying the number of iterations');
 
+% Display the title text
+alg_string = regexprep(algorithm,'_',' ');
+alg_string = regexprep(alg_string,'\s*.','${upper($0)}');
+fig_title = text(-1.4,1.4,alg_string,'FontSize',10,'Color','red','FontWeight','Bold', 'Interpreter', 'none');
+
+    
 %Iteration starts here (for the previously specified number of iterations)
 for t = 1:max_iterations
     disp(t) % to display the iteration number
     %stop_condition = 1; % This variable is to define the stop condition. If it's 1 - then stop the iteration/experiment 
     
+    fig_iter = text(-1.4,-1.4,strcat('Iteration :',' ',num2str(t)),'FontSize',10,'Color','red','FontWeight','Bold');
+
     % Retrieve the most recent poses from the Robotarium.  The time delay is
     % approximately 0.033 seconds in Robotarium
     x = r.get_poses(); % Get unicycle coordinates (x,y,theta)
@@ -120,17 +132,15 @@ for t = 1:max_iterations
     % Display the robot's index on top of each robot in the Robotarium
     % figure
     if(plot_robot_index == 1)  
-        fig1 = set(0,'CurrentFigure',r.figure_handle);
         for i=1:N
-            fig1(i) = text(x(1,i),x(2,i)+0.05,num2str(i),'FontSize',12,'Color','red','FontWeight','Bold');
+            fig_index(i) = text(x(1,i),x(2,i)+0.04,num2str(i),'FontSize',10,'Color','red','FontWeight','Bold');
         end
     end
 
     % Display the robot's trajectory in the Robotarium figure
     if(plot_robot_trajectory == 1)  
-        fig2 = set(0,'CurrentFigure',r.figure_handle);
         for i=1:N
-            fig2(i) = plot(x(1,i),x(2,i),'.--','Color',mycols(i,:));
+            fig_traj(i) = plot(x(1,i),x(2,i),'.--','Color',mycols(i,:));
         end
     end
     
@@ -139,19 +149,7 @@ for t = 1:max_iterations
         [L,G] = GetConnectedGraph(x(1:2,:),sensing_range); % Finding the initial connected Graph
     end
     
-    %% Rendezvous Algorithm
-    %%% Coordinates based consensus(Rendezvous) algorithms
-    %[dxi,stop_condition,energy(t)] = coordinates_based_rendezvous(L,xi); % This is the baseline algorithm
-    %[dxi,stop_condition,energy(t)] = coordinates_based_rendezvous_with_max_velocity(L,xi);
-    %%% Bearing-only consensus(Rendezvous) algorithms
-    %[dxi,stop_condition,energy(t)] = bearing_only_rendezvous_using_all_bearings(L,xi);
-    %[dxi,stop_condition,energy(t)] = bearing_only_rendezvous_using_min_and_max_bearings(L,xi);
-    %[dxi,stop_condition,energy(t)] = bearing_only_rendezvous_using_average_bearing(L,xi);
-    %[dxi,stop_condition,energy(t)] = bearing_only_rendezvous_using_enclosing_circles(L,xi);
-    %%% Both Bearing and Range based consensus(Rendezvous) algorithms
-    %[dxi,stop_condition,energy(t)] = bearing_and_range_based_rendezvous_using_weighted_bearings(L,xi);
-    %%% Consensus(Rendezvous) using Weighted Bearing approach based on wireless Received Signal Strength (RSS) and Direction of Arrival (DOA) estimation
-    %[dxi,stop_condition,energy(t)] = consensus_control_using_RSS_and_DOA(L,xi); %
+    %% Chosen Rendezvous Algorithm
     [dxi,stop_condition,energy(t)] = fH(L,xi);
     
     %% Plotting the connected graph
@@ -203,8 +201,10 @@ for t = 1:max_iterations
     end
     
     if(plot_robot_index == 1)  
-        delete(fig1); % delete the text objects (robot indices) on the Robotarium figure
+        delete(fig_index); % delete the text objects (robot indices) on the Robotarium figure
     end
+    
+    delete(fig_iter);
 end
 
 % Though we didn't save any data, we still should call r.call_at_scripts_end() after our
