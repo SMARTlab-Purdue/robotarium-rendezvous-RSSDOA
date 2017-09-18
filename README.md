@@ -28,5 +28,7 @@ For any queries, issues, and questions with the code, please contact the develop
 
 # Authors
 Ramviyas Parasuraamn: http://web.ics.purdue.edu/~rnattanm/ Github: https://github.com/ramviyas
+
 Byung-Cheol Min: http://web.ics.purdue.edu/~minb/
+
 SMART Lab - Purdue University: http://www.smart-laboratory.org/
