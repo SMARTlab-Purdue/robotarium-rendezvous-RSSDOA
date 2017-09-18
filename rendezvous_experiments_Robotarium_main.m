@@ -1,18 +1,26 @@
-%% This is the main file to conduct experiments for several consensus control (rendezvous) algorithms of N robots in the Robotarium testbed
+%% This is the main file to conduct experiments with several consensus control (rendezvous) algorithms of N robots in the Robotarium testbed
 %Ramviyas Parasuraman, ramviyas@purdue.edu. 
 close all;
 
 global sensing_range error_bearing error_distance uni_to_si_states si_to_uni_dyn si_pos_controller G N desired_distance;
 
 %% Choose your Rendezvous algorithm
-algorithm = 'consensus_control_using_RSS_and_DOA'
-%algorithm = 'coordinates_based_rendezvous' % This is the baseline algorithm
-%algorithm = 'coordinates_based_rendezvous_with_max_velocity';
+% Newly Proposed Weighted Bearing Controllers
+algorithm = 'weighted_bearing_consensus_using_RSS_and_DOA'; % It uses the DOA of RSS and the RSS form wireless nework measurements as control inputs
+%algorithm = 'weighted_bearing_consensus_using_Range_and_Bearings'; %It uses range and bearing measurements from any sensors as control inputs
+
+% Baseline Algorithm - It relies on sharing the coordinates of neighbor robots
+%algorithm = 'coordinates_based_rendezvous' ;
+
+% State of the Art (SOTA) Consensus Controllers
 %algorithm = 'bearing_only_rendezvous_using_all_bearings';
 %algorithm = 'bearing_only_rendezvous_using_min_and_max_bearings';
-%algorithm = 'bearing_only_rendezvous_using_average_bearing';
 %algorithm = 'bearing_only_rendezvous_using_enclosing_circles';
-%algorithm = 'bearing_and_range_based_rendezvous_using_weighted_bearings';
+
+% Other possible consensus controllers 
+%algorithm = 'coordinates_based_rendezvous_with_max_velocity';
+%algorithm = 'bearing_only_rendezvous_using_average_bearing';
+
 fH = str2func(algorithm); % function handle for the chosen rendezvous algorithm
 
 %% Get Robotarium object used to communicate with the robots/simulator
@@ -29,8 +37,8 @@ desired_energy = 0.2; % desired value of the Lyapunov candidate energy function
 sensing_range = 0.8; % Sensing radius within which robot i detects robot j (same for all the robots)
 safety_radius = 0.04; % safety radius for collision avoidance between robots
 dxmax = 1; % if normalize_velocities is used
-error_bearing = 0.35; % Standard deviations of the bearing measurment error (radians)
-error_distance = 0.0; % Standard deviations of the distance measurment error (m)
+error_bearing = 1.0; % Standard deviations of the bearing measurment error (radians)
+error_distance = 0.3; % Standard deviations of the distance measurment error (m)
 
 %% Flags to use specific parts of the code
 collision_avoidance = 0; % To enable/disable barrier certificates
@@ -39,8 +47,8 @@ update_network_topology = 1; % To enable/disable the update of connected graph (
 plot_initial_graph = 0; % To plot initial connected graph
 plot_dynamic_graph = 0; % To plot updated connected graph in every iteration
 plot_robot_index = 0; % To enable/disable the display of robot index on top of each robot in the Robotarium figure
-plot_robot_trajectory = 1; % To enable/disable the display of robot trajectory in the Robotarium figure
-plot_robot_initialposition = 1; % To enable/disable the display of robot initial position in the Robotarium figure
+plot_robot_trajectory = 0; % To enable/disable the display of robot trajectory in the Robotarium figure
+plot_robot_initialposition = 0; % To enable/disable the display of robot initial position in the Robotarium figure
 
 %% Grab tools we need to convert from single-integrator to unicycle dynamics
 %Gains for the transformation from single-integrator to unicycle dynamics
@@ -58,7 +66,7 @@ si_pos_controller = create_si_position_controller('XVelocityGain', 2, 'YVelocity
 si_barrier_cert = create_si_barrier_certificate('SafetyRadius', safety_radius);
 
 %% Initialize the robots to a fixed position
-%initial_positions = [0 0.4 0.5 0.4 -0.1 -0.3 -0.5 -0.7 0 1 -1 -1 0.3 -0.5 0.9; 0.3 0.9 1.1 -1 -0.2 -0.9 -0.3 -1 1.2 -1.2 0.2 -0.9 -0.4 0.6 1];
+initial_positions = [0 0.4 0.5 0.4 -0.1 -0.3 -0.5 -0.7 0 1 -1 -1 0.3 -0.5 0.9; 0.3 0.9 1.1 -1 -0.2 -0.9 -0.3 -1 1.2 -1.2 0.2 -0.9 -0.4 0.6 1];
 %initial_positions = r.poses(1:2,:) *2; % For random initial positions
 r = initialize_robot_positions(r,initial_positions);
 
