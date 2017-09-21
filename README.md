@@ -23,6 +23,9 @@ We have provided the following utility functions to use it in the experiments. T
 3. minboundsemicircle: This is a third-party function available in Mathworks File Exchange provided by John D'Errico as "A suite of minimal bounding objects" (v1.2). It provides a smallest enclosing circle given a set of points. 
 https://www.mathworks.com/matlabcentral/fileexchange/34767-a-suite-of-minimal-bounding-objects?focused=3820668&tab=function
 
+# Video demonstration
+For more information on the proposed and the state-of-the-art controllers, please visit this video demonstration in YouTube: https://youtu.be/PzFVuA4wIP8.
+
 # Contact
 For any queries, issues, and questions with the code, please contact the developers Ramviyas Parasuraman (ramviyas@purdue.edu) and Prof.Byung-Cheol Min (minb@purdue.edu).
 
