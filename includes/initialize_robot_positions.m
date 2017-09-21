@@ -13,6 +13,6 @@ for iter=1:1000
     r.set_velocities(1:N, dxu);    
     r.step();
 end
-r.get_poses();
-r.step();
+%r.get_poses();
+%r.step();
 %%

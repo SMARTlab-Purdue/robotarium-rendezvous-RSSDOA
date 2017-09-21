@@ -2,6 +2,7 @@ function [L,G] = GetConnectedGraph(xi,sensing_range)
 %GetConnectedGraph computes the connected graph in terms of Graph object and its Laplacian given a set of node coordinates (xi - 2xN
 %vector) and a sensing range for each node
 %Author: Ramviyas Parasuraman, ramviyas@purdue.edu
+
 N = length(xi); % Number of nodes
 source_list = ones(1,N*N); % Variable to store source nodes of the edges - preallocated with max possible edges
 destination_list = ones(1,N*N); % Variable to store destination nodes of the edges - preallocated with max possible edges
