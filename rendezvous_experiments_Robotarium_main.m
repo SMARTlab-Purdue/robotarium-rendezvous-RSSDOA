@@ -27,7 +27,7 @@ fH = str2func(algorithm); % function handle for the chosen rendezvous algorithm
 
 %% Get Robotarium object used to communicate with the robots/simulator
 rb = RobotariumBuilder();
-N=15; % Number of agents/robots
+N=20; % Number of agents/robots
 % Build the Robotarium simulator object!
 r = rb.set_number_of_agents(N).set_save_data(false).build();
 figure_robotarium = figure(1); movegui('northeast'); movegui('onscreen');
@@ -46,8 +46,8 @@ dxmax = 1; % if normalize_velocities is used
 collision_avoidance = 0; % To enable/disable barrier certificates
 normalize_velocities = 1; % To normalize the velocities (recommended)
 update_network_topology = 1; % To enable/disable the update of connected graph (dynamically) in every iteration
-plot_initial_graph = 1; % To plot initial connected graph
-plot_dynamic_graph = 1; % To plot updated connected graph in every iteration
+plot_initial_graph = 0; % To plot initial connected graph
+plot_dynamic_graph = 0; % To plot updated connected graph in every iteration
 plot_robot_index = 1; % To enable/disable the display of robot index on top of each robot in the Robotarium figure
 plot_robot_trajectory = 1; % To enable/disable the display of robot trajectory in the Robotarium figure
 plot_robot_initialposition = 1; % To enable/disable the display of robot initial position in the Robotarium figure
@@ -68,9 +68,9 @@ si_pos_controller = create_si_position_controller('XVelocityGain', 2, 'YVelocity
 si_barrier_cert = create_si_barrier_certificate('SafetyRadius', safety_radius);
 
 %% Initialize the robots to fixed positions
-initial_positions = [0 0.4 0.5 0.4 -0.1 -0.3 -0.5 -0.7 0 1 -1 -1 0.3 -0.5 0.9; 0.3 0.9 1.1 -1 -0.2 -0.9 -0.3 -1 1.2 -1.2 0.2 -0.9 -0.4 0.6 1];
-%initial_positions = r.poses(1:2,:) *2; % For random initial positions
-r = initialize_robot_positions(r,initial_positions);
+%initial_positions = [0 0.4 0.5 0.4 -0.1 -0.3 -0.5 -0.7 0 1 -1 -1 0.3 -0.5 0.9; 0.3 0.9 1.1 -1 -0.2 -0.9 -0.3 -1 1.2 -1.2 0.2 -0.9 -0.4 0.6 1];
+initial_positions = r.poses(1:2,:) *3; % For random initial positions
+r = initialize_robot_positions(r,N,initial_positions);
 
 
 %% Finding the connected tree based on initial positions of the robots

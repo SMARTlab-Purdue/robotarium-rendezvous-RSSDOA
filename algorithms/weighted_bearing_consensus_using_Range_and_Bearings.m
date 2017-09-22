@@ -40,7 +40,7 @@ for i = 1:N
     
     w_ij = w_ij./sum(w_ij); % Normalizing the weight vector to bound the control velocities
     
-    % Calculate the linera velocities (for a Single Integrator model)
+    % Calculate the linear velocities (for a Single Integrator model)
     if(~isempty(neighbors))
         dxi(1,i) = vmax*sum(w_ij.*xvel) / length(neighbors);
         dxi(2,i) = vmax*sum(w_ij.*yvel) / length(neighbors);
