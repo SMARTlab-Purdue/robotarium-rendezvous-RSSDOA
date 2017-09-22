@@ -11,6 +11,7 @@ algorithm = 'weighted_bearing_consensus_using_RSS_and_DOA'; % It uses the DOA of
 
 % Baseline Algorithm - Coordinates based consensus(Rendezvous) algorithms
 %algorithm = 'coordinates_based_rendezvous' ; % It relies on the full coordinates (relative positions) of neighbor robots
+%algorithm = 'coordinates_based_connectivity_preserving_rendezvous' ; % It is similar to the above but uses weights (artificial potential fields)
 
 % State of the Art (SOTA) Bearing-only consensus(Rendezvous) algorithms
 %algorithm = 'bearing_only_rendezvous_using_all_bearings';
