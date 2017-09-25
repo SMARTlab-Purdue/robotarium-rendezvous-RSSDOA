@@ -1,6 +1,6 @@
 function [dxi,stop_condition,energy] = coordinates_based_rendezvous(L,xi)
 % This function implements a linear consensus controller using the
-% coordinates information as the control inputs based on the following reference:
+% relative positions information as the control inputs based on the following reference:
 % A. Jadbabaie, J. Lin, and A. S. Morse, “Coordination of groups of mobile
 % autonomous agents using nearest neighbor rules,” IEEE Trans. Autom. Control, vol. 48, no. 6, pp. 988–1001, Jun. 2003.
 % This is also available as an example in Robotarium: https://www.robotarium.gatech.edu/examples/rendezvous

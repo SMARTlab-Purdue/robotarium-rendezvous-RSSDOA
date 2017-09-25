@@ -1,6 +1,6 @@
 function [dxi,stop_condition,energy] = coordinates_based_rendezvous_with_mean_velocity(L,xi)
 % This function implements a linear consensus controller using the
-% average of all neighbor coordinates as the control inputs.
+% average of all neighbor relative positions as the control inputs.
 % Author: Ramviyas Parasuraman. ramviyas@purdue.edu
 
 global N desired_distance error_distance;

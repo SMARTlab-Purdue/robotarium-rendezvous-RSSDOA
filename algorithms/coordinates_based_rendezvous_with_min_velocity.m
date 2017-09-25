@@ -1,6 +1,6 @@
 function [dxi,stop_condition,energy] = coordinates_based_rendezvous_with_min_velocity(L,xi)
 % This function implements a linear consensus controller using the
-% nearest neighbor coordinates information as the control inputs.
+% nearest neighbor relative position information as the control inputs.
 % Author: Ramviyas Parasuraman. ramviyas@purdue.edu
 
 global N desired_distance error_distance;

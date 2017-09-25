@@ -1,6 +1,6 @@
 function [dxi,stop_condition,energy] = coordinates_based_rendezvous_with_max_velocity(L,xi)
 % This function implements a linear consensus controller using the
-% farthest neighbor coordinates information as the control inputs.
+% farthest neighbor relative position information as the control inputs.
 % Author: Ramviyas Parasuraman. ramviyas@purdue.edu
 
 global N desired_distance error_distance;
