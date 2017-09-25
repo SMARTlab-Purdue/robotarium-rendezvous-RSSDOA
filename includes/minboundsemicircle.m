@@ -1,6 +1,7 @@
 function semicircle = minboundsemicircle(x,y)
 % minboundsemicircle: minimum radius bounding semi-circle
 % usage: semicircle = minboundsemicircle(x,y)
+% "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
 %
 % Finds that semi-circle with minimal radius
 % that fully contains the data

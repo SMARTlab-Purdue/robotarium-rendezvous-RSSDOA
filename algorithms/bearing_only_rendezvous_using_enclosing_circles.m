@@ -13,6 +13,7 @@ dxi = zeros(2, N);
 stop_condition = 1;
 energy = 0; % Lyapunov candidate function
 vmax=2;
+variant = 1; % A flag to choose whether to compute the smallest enclosing circle or semicircle (1 = circle, 2 = semicircle)
 
 for i = 1:N
     neighbors = topological_neighbors(L, i);
@@ -35,9 +36,14 @@ for i = 1:N
     end
     
     if(~isempty(neighbors))
-        % calculating the smallest circle contaning all neighbors
-        semicircle = minboundsemicircle(xpos_j,ypos_j); % Calcute the smallest circle that encapsulates all points using the code from "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
-        center = semicircle.center'; % direction to the target point
+        % calculating the smallest circle or semi-circle contaning all neighbors
+        if(variant == 1) % Use smallest circle - results in stable algorithm performance but slower computational efficiency (slower convergence)
+            [center,~] = minboundcircle(xpos_j,ypos_j); % Calcute the smallest circle that encapsulates all points using the code from "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
+            center = center';
+        else % Use smallest semicircle - results in faster algorithm convergence (higher computational efficiency) but may affect stability
+            semicircle = minboundsemicircle(xpos_j,ypos_j); % Calcute the smallest semicircle that encapsulates all points using the code from "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
+            center = semicircle.center'; % direction to the target point
+        end
         center_norm = norm(center - xi(:,i));  % distance of the center from robot i
         weight = min(sensing_range/2,center_norm); % distance to the target point
 
