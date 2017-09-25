@@ -13,22 +13,22 @@ N=15; % Number of agents/robots
 algorithm = 'weighted_bearing_consensus_using_RSS_and_DOA'; % It uses the DOA of RSS and the RSS form wireless nework measurements as control inputs
 %algorithm = 'weighted_bearing_consensus_using_Range_and_Bearings'; % It uses both range and bearing measurements from any sensors as control inputs
 
-% Baseline Algorithms - Coordinates based consensus(Rendezvous) algorithms
-%algorithm = 'coordinates_based_rendezvous' ; % It relies on the full coordinates (relative positions) of neighbor robots
+% Coordinates based consensus (Rendezvous) algorithms - using relative position measurements
+%algorithm = 'coordinates_based_rendezvous' ; % (Baseline) It relies on the full coordinates (relative positions) of neighbor robots
 %algorithm = 'coordinates_based_connectivity_preserving_rendezvous' ; % It is similar to the above but uses weights (artificial potential fields)
 %algorithm = 'coordinates_based_rendezvous_circumcenter' ; % It relies on the circumcenter of all coordinates (relative positions) of neighbor robots
 
 
 % State of the Art (SOTA) Bearing-only consensus(Rendezvous) algorithms
-%algorithm = 'bearing_only_rendezvous_using_all_bearings';
-%algorithm = 'bearing_only_rendezvous_using_min_and_max_bearings';
-%algorithm = 'bearing_only_rendezvous_using_enclosing_circles';
+%algorithm = 'bearing_only_rendezvous_using_all_bearings'; % It uses bearing measurements of all neighbor robots from each robot
+%algorithm = 'bearing_only_rendezvous_using_min_and_max_bearings'; % It uses only the min and max bearings of neighbors from each robot
+%algorithm = 'bearing_only_rendezvous_using_enclosing_circles'; % It uses bearing measurmeents and enclosing circles algorithm
 
-% Other possible consensus controllers 
-%algorithm = 'bearing_only_rendezvous_using_average_bearing';
-%algorithm = 'coordinates_based_rendezvous_with_mean_velocity';
-%algorithm = 'coordinates_based_rendezvous_with_max_velocity';
-%algorithm = 'coordinates_based_rendezvous_with_min_velocity';
+% Other possible consensus controllers - both coordinates and bearings based controllers
+%algorithm = 'bearing_only_rendezvous_using_average_bearing'; % It uses mean of neighbor bearings from each robot
+%algorithm = 'coordinates_based_rendezvous_with_mean_velocity'; % It uses mean of all neighbor directions
+%algorithm = 'coordinates_based_rendezvous_with_max_velocity'; % It uses the coordinate of farthest neighbor
+%algorithm = 'coordinates_based_rendezvous_with_min_velocity'; % It uses the coordinate of the nearest neighbor
 
 fH = str2func(algorithm); % function handle for the chosen rendezvous algorithm
 
