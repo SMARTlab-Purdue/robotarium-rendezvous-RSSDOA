@@ -40,7 +40,7 @@ for i = 1:N
         if(variant == 1) % Use smallest circle - results in stable algorithm performance but slower computational efficiency (slower convergence)
             [center,~] = minboundcircle(xpos_j,ypos_j); % Calcute the smallest circle that encapsulates all points using the code from "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
             center = center';
-        else % Use smallest semicircle - results in faster algorithm convergence (higher computational efficiency) but may affect stability
+        else % Use smallest semicircle - results in faster algorithm convergence (higher computational efficiency) but with little compromise to stability of movements
             semicircle = minboundsemicircle(xpos_j,ypos_j); % Calcute the smallest semicircle that encapsulates all points using the code from "A suite of minimal bounding objects" by John D'Errico (v1.2 23 May 2014) in Mathworks File Exchange.
             center = semicircle.center'; % direction to the target point
         end
@@ -48,6 +48,6 @@ for i = 1:N
         weight = min(sensing_range/2,center_norm); % distance to the target point
 
         % For each robot, calculate velocities based on enclosing circles of pseudo-positions    if(~isempty(neighbors))
-        dxi(:,i) = vmax * weight * center / center_norm; % compute velocity to the target point
+        dxi(:,i) = vmax * weight * (center-xi(:,i)) / center_norm; % compute velocity to the target point
     end
 end
