@@ -56,9 +56,6 @@ minboundcircle: This is a third-party function that provides a smallest enclosin
 
 minboundsemicircle: This is a third-party function that provide a smallest enclosing semicircle given a set of points. (same reference as the previous function).
 
-# Video demonstration
-For more information on the proposed and the state-of-the-art controllers, please visit this video demonstration in YouTube: https://youtu.be/PzFVuA4wIP8.
-
 # Contact
 For any queries, issues, and questions with the code, please contact Ramviyas Parasuraman (ramviyas at purdue dot edu).
 
