@@ -18,24 +18,27 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 # Included **Algorithm** functions
 We have implemented the following consensus algorithms.
 
-## Bearing-aided consensus controllers
-weighted_bearing_consensus_using_Range_and_Bearings: It uses both range and bearing measurements from any sensors as control inputs
+## Newly proposed algorithm - consensus control using RSS and DOA of wireless signals (termed Weighted Bearings Controller)
+* weighted_bearing_consensus_using_RSS_and_DOA: It proposed to use Direction of arrival (DOA) of wireless signals estimated using the Received Signal Strength (RSS) in the consensus control. The relative bearings (DOA) of the neighbor robots are used to control the robot's position and direction, whereas the RSS is used to weight each neighbor's impact on the distributed consensus controller. 
 
 ## Coordinates based consensus (Rendezvous) algorithms - using relative position measurements
-coordinates_based_rendezvous: (Baseline) It relies on the full coordinates (relative positions) of neighbor robots
+* coordinates_based_rendezvous: (Baseline) It relies on the full coordinates (relative positions) of neighbor robots. This is the standard rendezvous algorithm. See https://www.robotarium.gatech.edu/examples/rendezvous for more information on this algorithm.
 
-coordinates_based_connectivity_preserving_rendezvous: It is similar to the above but uses weights (artificial potential fields)
+* coordinates_based_connectivity_preserving_rendezvous: It is similar to the above but uses weights (artificial potential fields)
 
-coordinates_based_rendezvous_circumcenter: It relies on the circumcenter of all coordinates (relative positions) of neighbor robots
+* coordinates_based_rendezvous_circumcenter: It relies on the circumcenter of all coordinates (relative positions) of neighbor robots
 
-## State of the Art (SOTA) Bearing-only consensus(Rendezvous) algorithms
-bearing_only_rendezvous_using_all_bearings: It uses bearing measurements of all neighbor robots from each robot
+## State-of-the-art Bearing-only consensus algorithms
+* bearing_only_rendezvous_using_all_bearings: It uses bearing measurements of all neighbor robots from each robot
 
-bearing_only_rendezvous_using_min_and_max_bearings: It uses only the min and max bearings of neighbors from each robot
+* bearing_only_rendezvous_using_min_and_max_bearings: It uses only the min and max bearings of neighbors from each robot
 
-bearing_only_rendezvous_using_enclosing_circles: It uses bearing measurmeents and enclosing circles algorithm
+* bearing_only_rendezvous_using_enclosing_circles: It uses bearing measurmeents and enclosing circles algorithm
 
-## Other (possible) consensus controllers - both coordinates and bearings based controllers
+## State-of-the-art consensus controllers using both Range and Bearings
+* weighted_bearing_consensus_using_Range_and_Bearings: It uses both range and bearing measurements from any sensors as control inputs
+
+## Other (possible) consensus controllers from the state-of-the-art : using both coordinates and bearings based controllers
 bearing_only_rendezvous_using_average_bearing: It uses mean of neighbor bearings from each robot
 
 coordinates_based_rendezvous_with_mean_velocity: It uses mean of all neighbor directions
@@ -47,14 +50,14 @@ coordinates_based_rendezvous_with_min_velocity: It uses the coordinate of the ne
 # Included utility functions
 We have provided the following utility functions to use it in the experiments. They can also be used as a standalone function.
 
-GetConnectedGraph: This functions provides a connected graph given the coordinates of the agents and a common sensing range.
+* GetConnectedGraph: This functions provides a connected graph given the coordinates of the agents and a common sensing range.
 
-initialize_robot_positions: This function repositions the randomly positioned robots in the Robotarium simulator to the initial positions supplied as input to the function.
+* initialize_robot_positions: This function repositions the randomly positioned robots in the Robotarium simulator to the initial positions supplied as input to the function.
 
 ### Third party utility functions
-minboundcircle: This is a third-party function that provides a smallest enclosing circle given a set of points. Available in Mathworks File Exchange provided by John D'Errico as "A suite of minimal bounding objects" (v1.2). https://www.mathworks.com/matlabcentral/fileexchange/34767-a-suite-of-minimal-bounding-objects?focused=3820668&tab=function
+* minboundcircle: This is a third-party function that provides a smallest enclosing circle given a set of points. Available in Mathworks File Exchange provided by John D'Errico as "A suite of minimal bounding objects" (v1.2). https://www.mathworks.com/matlabcentral/fileexchange/34767-a-suite-of-minimal-bounding-objects?focused=3820668&tab=function
 
-minboundsemicircle: This is a third-party function that provide a smallest enclosing semicircle given a set of points. (same reference as the previous function).
+* minboundsemicircle: This is a third-party function that provide a smallest enclosing semicircle given a set of points. (same reference as the previous function).
 
 # Contact
 For any queries, issues, and questions with the code, please contact Ramviyas Parasuraman (ramviyas at purdue dot edu).
