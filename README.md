@@ -12,13 +12,13 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 1. First navigate to the Robotarium folder where your downloaded the Robotarium source codes. And Run the "init.m" file to initialize the Matlab workspace and include necessary paths.
 2. Navigate to the current repository (robotarium-rendezvous-RSSDOA) folder
 3. Add to path (Include) the 'algorithms' and 'includes' directories into your Matlab path.
-4. Use the '''rendezvous_experiments_Robotarium_main.m''' file and choose your desired rendezvous algorithm (12 options currently available) along with experiment parameters and run this main file.
+4. Use the rendezvous_experiments_Robotarium_main.m file and choose your desired rendezvous algorithm (12 options currently available) along with experiment parameters and run this main file.
 5. Choose respective consensus control functions file in the "algorithms" folder to change/modify/update the algorithm.
 
 # Included **Algorithm** functions
 We have implemented the following consensus control algorithms.
 
-## Newly proposed ''Weighted Bearings Controller'' - consensus control using RSS and DOA of wireless signals
+## Newly proposed Weighted Bearings Controller - consensus control using RSS and DOA of wireless signals
 * weighted_bearing_consensus_using_RSS_and_DOA: The relative bearings (DOA of wireless signals) of the neighbor robots are used to control the robot's position and direction, whereas the RSS is used to weight each neighbor's impact on the distributed consensus controller. 
 
 ## Coordinates based consensus (Rendezvous) algorithms - using relative position measurements
