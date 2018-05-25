@@ -1,6 +1,6 @@
 # Multi-Robot Consensus based Rendezvous in Robotarium
 
-This repository contains the Matlab source codes (to use in Robotarium platform) of various rendezvous controllers for consensus control in a multi-agent / multi-robot system. 
+This repository contains the Matlab source codes (to use in Robotarium platform) of various rendezvous controllers from the state-of-the-art of consensus control in a multi-agent / multi-robot system. In addition, we propose a consensus controller using wireless netowrk measurements which uses the Received Signal Strength (RSS) measurements and the Direction of Arrival (DOA) of wireless signals estimated using the RSS measurements.
 
 Robotarium is a remotely accessible multi-robot experiment testbed provided by the Georgia Tech. https://www.robotarium.gatech.edu/
 
@@ -12,14 +12,14 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 1. First navigate to the Robotarium folder where your downloaded the Robotarium source codes. And Run the "init.m" file to initialize the Matlab workspace and include necessary paths.
 2. Navigate to the current repository (robotarium-rendezvous-RSSDOA) folder
 3. Add to path (Include) the 'algorithms' and 'includes' directories into your Matlab path.
-4. Use the rendezvous_experiments_Robotarium_main.m file and choose your desired rendezvous algorithm (8 options currently available) along with experiment parameters and run this main file.
+4. Use the '''rendezvous_experiments_Robotarium_main.m''' file and choose your desired rendezvous algorithm (12 options currently available) along with experiment parameters and run this main file.
 5. Choose respective consensus control functions file in the "algorithms" folder to change/modify/update the algorithm.
 
 # Included **Algorithm** functions
-We have implemented the following consensus algorithms.
+We have implemented the following consensus control algorithms.
 
-## Newly proposed algorithm - consensus control using RSS and DOA of wireless signals (termed Weighted Bearings Controller)
-* weighted_bearing_consensus_using_RSS_and_DOA: It proposed to use Direction of arrival (DOA) of wireless signals estimated using the Received Signal Strength (RSS) in the consensus control. The relative bearings (DOA) of the neighbor robots are used to control the robot's position and direction, whereas the RSS is used to weight each neighbor's impact on the distributed consensus controller. 
+## Newly proposed ''Weighted Bearings Controller'' - consensus control using RSS and DOA of wireless signals
+* weighted_bearing_consensus_using_RSS_and_DOA: The relative bearings (DOA of wireless signals) of the neighbor robots are used to control the robot's position and direction, whereas the RSS is used to weight each neighbor's impact on the distributed consensus controller. 
 
 ## Coordinates based consensus (Rendezvous) algorithms - using relative position measurements
 * coordinates_based_rendezvous: (Baseline) It relies on the full coordinates (relative positions) of neighbor robots. This is the standard rendezvous algorithm. See https://www.robotarium.gatech.edu/examples/rendezvous for more information on this algorithm.
@@ -39,13 +39,13 @@ We have implemented the following consensus algorithms.
 * weighted_bearing_consensus_using_Range_and_Bearings: It uses both range and bearing measurements from any sensors as control inputs
 
 ## Other (possible) consensus controllers from the state-of-the-art : using both coordinates and bearings based controllers
-bearing_only_rendezvous_using_average_bearing: It uses mean of neighbor bearings from each robot
+* bearing_only_rendezvous_using_average_bearing: It uses mean of neighbor bearings from each robot
 
-coordinates_based_rendezvous_with_mean_velocity: It uses mean of all neighbor directions
+* coordinates_based_rendezvous_with_mean_velocity: It uses mean of all neighbor directions
 
-coordinates_based_rendezvous_with_max_velocity: It uses the coordinate of farthest neighbor
+* coordinates_based_rendezvous_with_max_velocity: It uses the coordinate of farthest neighbor
 
-coordinates_based_rendezvous_with_min_velocity: It uses the coordinate of the nearest neighbor
+* coordinates_based_rendezvous_with_min_velocity: It uses the coordinate of the nearest neighbor
 
 # Included utility functions
 We have provided the following utility functions to use it in the experiments. They can also be used as a standalone function.
