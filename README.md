@@ -18,9 +18,6 @@ Robotarium is a remotely accessible multi-robot experiment testbed provided by t
 # Included **Algorithm** functions
 We have implemented the following consensus control algorithms.
 
-## Newly proposed Weighted Bearings Controller - consensus control using RSS and DOA of wireless signals
-* weighted_bearing_consensus_using_RSS_and_DOA: The relative bearings (DOA of wireless signals) of the neighbor robots are used to control the robot's position and direction, whereas the RSS is used to weight each neighbor's impact on the distributed consensus controller. 
-
 ## Coordinates based consensus (Rendezvous) algorithms - using relative position measurements
 * coordinates_based_rendezvous: (Baseline) It relies on the full coordinates (relative positions) of neighbor robots. This is the standard rendezvous algorithm. See https://www.robotarium.gatech.edu/examples/rendezvous for more information on this algorithm.
 
@@ -46,6 +43,9 @@ We have implemented the following consensus control algorithms.
 * coordinates_based_rendezvous_with_max_velocity: It uses the coordinate of farthest neighbor
 
 * coordinates_based_rendezvous_with_min_velocity: It uses the coordinate of the nearest neighbor
+
+## Weighted Bearings Controller - consensus control using RSS and DOA of wireless signals
+* weighted_bearing_consensus_using_RSS_and_DOA: The relative bearings (DOA of wireless signals) of the neighbor robots are used to control the robot's position and direction, whereas the RSS is used to weight each neighbor's impact on the distributed consensus controller. 
 
 # Included utility functions
 We have provided the following utility functions to use it in the experiments. They can also be used as a standalone function.
