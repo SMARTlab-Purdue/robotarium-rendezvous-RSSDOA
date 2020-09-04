@@ -60,7 +60,7 @@ We have provided the following utility functions to use it in the experiments. T
 * minboundsemicircle: This is a third-party function that provide a smallest enclosing semicircle given a set of points. (same reference as the previous function).
 
 # Contact
-For any queries, issues, and questions with the code, please contact Ramviyas Parasuraman (ramviyas at purdue dot edu).
+For any queries, issues, and questions with the code, please contact Ramviyas Parasuraman (ramviyas at uga dot edu).
 
 # Contributors
 Ramviyas Parasuraman (ramviyas at uga dot edu): http://cobweb.cs.uga.edu/~ramviyas/
