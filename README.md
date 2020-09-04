@@ -63,7 +63,7 @@ We have provided the following utility functions to use it in the experiments. T
 For any queries, issues, and questions with the code, please contact Ramviyas Parasuraman (ramviyas at purdue dot edu).
 
 # Contributors
-Ramviyas Parasuraman (ramviyas at purdue dot edu): http://web.ics.purdue.edu/~rnattanm/ Github: https://github.com/ramviyas
+Ramviyas Parasuraman (ramviyas at uga dot edu): http://cobweb.cs.uga.edu/~ramviyas/
 
 Byung-Cheol Min (minb at purdue dot edu): http://web.ics.purdue.edu/~minb/
 
