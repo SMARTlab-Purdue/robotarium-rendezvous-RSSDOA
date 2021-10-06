@@ -62,8 +62,8 @@ We have provided the following utility functions to use it in the experiments. T
 # Citation
 If you find this work useful, please cite the below paper.
 
-_Parasuraman, R. and Min, B.C., 2019. Consensus control of distributed robots using direction of arrival of wireless signals. In Distributed Autonomous Robotic Systems (pp. 17-34). Springer, Cham.
-_
+Parasuraman, R. and Min, B.C., 2019. Consensus control of distributed robots using direction of arrival of wireless signals. In Distributed Autonomous Robotic Systems (pp. 17-34). Springer, Cham.
+
 
 Paper link: https://link.springer.com/chapter/10.1007/978-3-030-05816-6_2
 Preprint link: http://www.smart-laboratory.org/publications/ParasuramanDARS2018.pdf
